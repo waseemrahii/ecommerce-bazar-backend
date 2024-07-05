@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { accessTokenExpiresIn, secret } from "../config/jwtConfig.js";
+import config from "../config/index.js";
 
 function generateAccessToken(userId) {
-	return jwt.sign({ userId }, secret, {
-		expiresIn: accessTokenExpiresIn,
+	return jwt.sign({ userId }, config.jwtSecret, {
+		expiresIn: config.jwtAccessTime,
 	});
 }
 

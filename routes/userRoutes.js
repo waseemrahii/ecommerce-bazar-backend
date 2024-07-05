@@ -15,10 +15,7 @@ router.post("/login", login);
 router.post("/register", signup);
 router.post("/logout", protect, logout);
 
-router
-	.route("/")
-	.post(protect, restrictTo("admin"), createUser)
-	.get(protect, getUsers);
+router.route("/").post(protect, restrictTo("admin"), createUser).get(getUsers);
 
 router.route("/:id").get(getUser).put(updateUser).delete(deleteUser);
 

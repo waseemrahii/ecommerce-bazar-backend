@@ -8,6 +8,11 @@ const categorySchema = new mongoose.Schema(
 			required: [true, "Please provide category."],
 			unique: true,
 		},
+		logo: {
+			type: String,
+			required: [true, "Please provide logo."],
+		},
+		priority: Number,
 		slug: string,
 	},
 	{

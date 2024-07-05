@@ -5,7 +5,6 @@ mongoose.set("strictQuery", false);
 
 const connectDB = async () => {
 	try {
-		console.log("Mongodb connection start");
 		const connect = await mongoose.connect(config.dbURI);
 
 		console.log(`Mongodb connected: ${connect.connection.host}`);

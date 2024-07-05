@@ -3,7 +3,6 @@ import catchAsync from "../utils/catchAsync.js";
 import AppError from "./../utils/appError.js";
 
 import { loginService } from "../services/authService.js";
-import { removeRefreshToken } from "../services/redisService.js";
 
 const createSendToken = catchAsync(async (user, statusCode, res) => {
 	// loginService is Redis database to store the token in cache
@@ -67,8 +66,6 @@ export const signup = catchAsync(async (req, res, next) => {
 
 export const logout = catchAsync(async (req, res, next) => {
 	const user = req.user;
-
-	await removeRefreshToken(user._id.toString());
 
 	// Clear the refreshToken cookie on the client
 	res.clearCookie("jwt");

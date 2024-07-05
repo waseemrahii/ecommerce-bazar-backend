@@ -8,7 +8,10 @@ const brandSchema = new mongoose.Schema(
 			required: [true, "Please provide brand."],
 			unique: true,
 		},
-		logo: string,
+		logo: {
+			type: String,
+			required: [true, "Please provide logo."],
+		},
 		slug: string,
 	},
 	{
