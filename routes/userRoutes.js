@@ -15,8 +15,15 @@ router.post("/login", login);
 router.post("/register", signup);
 router.post("/logout", protect, logout);
 
-router.route("/").post(protect, restrictTo("admin"), createUser).get(getUsers);
+router
+	.route("/")
+	.post(protect, restrictTo("admin"), createUser)
+	.get(protect, restrictTo("admin"), getUsers);
 
-router.route("/:id").get(getUser).put(updateUser).delete(deleteUser);
+router
+	.route("/:id")
+	.get(protect, getUser)
+	.put(protect, updateUser)
+	.delete(protect, restrictTo("admin"), deleteUser);
 
 export default router;

@@ -5,7 +5,7 @@ const categorySchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Please provide category."],
+			required: [true, "Please provide category name."],
 			unique: true,
 		},
 		logo: {
@@ -13,7 +13,7 @@ const categorySchema = new mongoose.Schema(
 			required: [true, "Please provide logo."],
 		},
 		priority: Number,
-		slug: string,
+		slug: String,
 	},
 	{
 		timestamps: true,
@@ -21,7 +21,20 @@ const categorySchema = new mongoose.Schema(
 );
 
 categorySchema.pre("save", function (next) {
-	this.slug = slugify(this.name, { lower: true });
+	if (this.isModified("name")) {
+		this.slug = slugify(this.name, { lower: true });
+		console.log(`Slug updated to: ${this.slug}`);
+	}
+	next();
+});
+
+categorySchema.pre("findByIdAndUpdate", function (next) {
+	const update = this.getUpdate();
+	if (update.name) {
+		update.slug = slugify(update.name, { lower: true });
+		this.setUpdate(update); // Ensure the update is set correctly
+		console.log(`Slug updated to: ${update.slug}`);
+	}
 	next();
 });
 
