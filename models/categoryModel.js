@@ -10,7 +10,7 @@ const categorySchema = new mongoose.Schema(
 		},
 		logo: {
 			type: String,
-			required: [true, "Please provide logo."],
+		
 		},
 		priority: Number,
 		slug: String,

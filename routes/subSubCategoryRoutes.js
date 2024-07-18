@@ -1,26 +1,32 @@
 import express from "express";
-
-import checkObjectId from "../middleware/checkObjectId.js";
-import { protect, restrictTo } from "../middleware/authMiddleware.js";
-import {
-	createSubSubCategory,
-	deleteSubSubCategory,
-	getSubSubCategories,
-	getSubSubCategory,
-	updateSubSubCategory,
-} from "../controllers/subSubCategoryController.js";
-
 const router = express.Router();
+import {
+  createSubSubCategory,
+  getAllSubSubCategories,
+  getSubSubCategoryById,
+  getSubSubCategoryBySlug,
+  updateSubSubCategoryById,
+  deleteSubSubCategoryById,
+  getSubSubCategoriesBySubCategorySlug
+} from "../controllers/subSubCategoryController.js";
+// import { protect, admin } from "../middleware/authMiddleware.js";
 
 router
-	.route("/")
-	.get(getSubSubCategories)
-	.post(protect, restrictTo("admin"), createSubSubCategory);
+  .route("/")
+  .post(createSubSubCategory)
+  .get(getAllSubSubCategories);
 
 router
-	.route("/:id")
-	.get(checkObjectId, getSubSubCategory)
-	.put(protect, restrictTo("admin"), checkObjectId, updateSubSubCategory)
-	.delete(protect, restrictTo("admin"), checkObjectId, deleteSubSubCategory);
+  .route("/:id")
+  .get(getSubSubCategoryById)
+  .put(updateSubSubCategoryById)
+  .delete(deleteSubSubCategoryById);
+
+router.route("/slug/:slug")
+.get(getSubSubCategoryBySlug);
+
+// get sub sub cateogries by sub category slug
+router.get('/subcategory/:slug', 
+	getSubSubCategoriesBySubCategorySlug);
 
 export default router;

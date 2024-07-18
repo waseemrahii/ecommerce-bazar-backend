@@ -4,12 +4,13 @@ import AppError from "./../utils/appError.js";
 
 import { loginService } from "../services/authService.js";
 import Vendor from "../models/vendorModel.js";
+import Customer from "../models/customerModel.js";
 
 const createSendToken = catchAsync(async (user, statusCode, res) => {
 	// loginService is Redis database to store the token in cache
 	const { accessToken } = await loginService(user);
 
-	console.log({ accessToken });
+	console.log(user);
 
 	// set cookie options
 	const cookieOptions = {
@@ -76,6 +77,32 @@ export const logout = catchAsync(async (req, res, next) => {
 		message: "Logout successfully",
 	});
 });
+export const loginCustomer = catchAsync(async (req, res, next) => {
+	const { email, password } = req.body;
+
+	// 1) Check if email and password exists
+	if (!email || !password) {
+		return next(new AppError("Please provide email and password", 400));
+	}
+
+	// 2) Check the user exists && password is correct
+	const user = await Customer.findOne({ email }).select("+password");
+
+	if (!user || !(await user.correctPassword(password, user.password))) {
+		return next(new AppError("Incorrect email or password", 401));
+	}
+
+	// 3) If everything is Ok, then send the response to client
+	createSendToken(user, 200, res);
+});
+
+export const signupCustomer = catchAsync(async (req, res, next) => {
+	// const { firstName, lastName, phoneNumber, email, password } = req.body;
+	const newCustomer = Customer.create(req.body);
+	console.log(newCustomer);
+
+	createSendToken(newCustomer, 201, res);
+});
 
 export const VendorLogin = catchAsync(async (req, res, next) => {
 	const { email, password } = req.body;
@@ -100,18 +127,6 @@ export const VendorSignup = catchAsync(async (req, res, next) => {
 	const newVendor = await Vendor.create(req.body);
 
 	createSendToken(newVendor, 201, res);
-});
-
-export const vendorLogout = catchAsync(async (req, res, next) => {
-	const user = req.user;
-
-	// Clear the refreshToken cookie on the client
-	res.clearCookie("jwt");
-
-	res.status(200).json({
-		status: "success",
-		message: "Logout successfully",
-	});
 });
 
 // exports.forgotPassword = catchAsync(async (req, res, next) => {
