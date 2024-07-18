@@ -30,6 +30,10 @@ const flashDealSchema = new mongoose.Schema({
         type: Number,
         default: 0, // Initially, no products are active in the flash deal
     },
+    productId: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+    }],
 }, { timestamps: true }); // Automatically add createdAt and updatedAt fields
 
 const FlashDeal = mongoose.model('FlashDeal', flashDealSchema);
