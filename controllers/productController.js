@@ -443,6 +443,7 @@ import Brand from '../models/brandModel.js';
 import Color from '../models/colorModel.js';
 import Customer from '../models/customerModel.js';
 
+ 
 // Utility function for sending error responses
 const sendErrorResponse = (res, error) => {
     res.status(500).json({ message: error.message });
@@ -466,6 +467,7 @@ const populateProductDetails = (query) => {
         .populate('brand', 'name')
         .populate('color', 'name');
 };
+
 
 
 // Create product
@@ -496,7 +498,10 @@ export const createProduct = async (req, res) => {
             color,
             attributeType,
             size,
-            videoLink
+            videoLink,
+            userId,
+            userType,
+            
         } = req.body;
 
         const categoryObj = await validateSlug(Category, category);
@@ -512,7 +517,7 @@ export const createProduct = async (req, res) => {
         if (color && !colorObj) {
             return res.status(400).json({ message: 'Invalid color ID' });
         }
-
+     
         const newProduct = new Product({
             name,
             description,
@@ -539,6 +544,9 @@ export const createProduct = async (req, res) => {
             attributeType,
             size,
             videoLink,
+            userId,
+            userType,
+    
             thumbnail: req.files['thumbnail'] ? req.files['thumbnail'][0].path : undefined,
             images: req.files['images'] ? req.files['images'].map(file => file.path) : [],
             status: 'pending',

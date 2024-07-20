@@ -244,3 +244,43 @@ export const updateFlashDealStatus = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Update Publish Status of Flash Deal
+export const updatePublishStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { publish } = req.body;
+
+        const updatedFlashDeal = await FlashDeal.findByIdAndUpdate(
+            id,
+            { publish },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedFlashDeal) {
+            return res.status(404).json({ message: 'Flash Deal not found' });
+        }
+
+        res.status(200).json({ message: 'Publish status updated successfully', flashDeal: updatedFlashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+// Delete Flash Deal
+export const deleteFlashDeal = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedFlashDeal = await FlashDeal.findByIdAndDelete(id);
+
+        if (!deletedFlashDeal) {
+            return res.status(404).json({ message: 'Flash Deal not found' });
+        }
+
+        res.status(200).json({ message: 'Flash Deal deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

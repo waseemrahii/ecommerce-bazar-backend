@@ -1,47 +1,4 @@
 
-
-// import mongoose from 'mongoose';
-// import mongoosePaginate from 'mongoose-paginate-v2';
-
-// const reviewSchema = new mongoose.Schema({
-//     reviewerName: { type: String, required: true },
-//     reviewerEmail: { type: String, required: true },
-//     reviewText: { type: String, required: true },
-//     rating: { type: Number, required: true, min: 1, max: 5 },
-// }, { timestamps: true });
-
-// const productSchema = new mongoose.Schema({
-//     name: { type: String },
-//     description: { type: String },
-//     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-//     subCategory: { type: mongoose.Schema.Types.ObjectId, ref: 'SubCategory' },
-//     subSubCategory: { type: mongoose.Schema.Types.ObjectId, ref: 'SubSubCategory' },
-//     productType: { type: String, enum: ['physical', 'digital'], default: 'physical' },
-//     digitalProductType: { type: String, default: "type" },
-//     sku: { type: String },
-//     unit: { type: String },
-//     tags: [{ type: String }],
-//     price: { type: Number, required: true },
-//     discount: { type: Number },
-//     quantity: { type: Number },
-//     stock: { type: Number, default: 0 },
-//     salesCount: { type: Number, default: 0 }, // New field for tracking sales
-//     averageRating: { type: Number, default: 0 }, // New field for average rating
-//     thumbnail: { type: String },
-//     images: [{ type: String }],
-//     isFeatured: { type: Boolean, default: false },
-//     status: { type: String, enum: ['pending', 'active', 'inactive'], default: 'pending' },
-//     reviews: [reviewSchema]
-// }, { timestamps: true });
-
-//  productSchema.plugin(mongoosePaginate);
-
-// const Product = mongoose.model('Product', productSchema);
-
-// export default Product;
-
-
-
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
@@ -151,6 +108,12 @@ const productSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending'
     },
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    userType: { 
+        type: String, 
+        enum: ['vendor', 'admin'],
+         required: true 
+        },
     reviews: [reviewSchema]
 }, {
     timestamps: true
@@ -158,3 +121,5 @@ const productSchema = new mongoose.Schema({
 productSchema.plugin(mongoosePaginate);
 const Product = mongoose.model('Product', productSchema);
 export default Product;
+
+

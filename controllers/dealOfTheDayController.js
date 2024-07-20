@@ -4,24 +4,46 @@ import DealOfTheDay from '../models/dealOfTheDayModel.js';
 import Product from '../models/ProductModels.js';
 
 
+// // Create a Deal of the Day
+// export const createDealOfTheDay = async (req, res) => {
+//     try {
+//         const { productId, title } = req.body;
+  
+//        const product = await Product.findById(productId);
+//        if (!product) {
+//            return res.status(404).json({ message: 'Product not found' });
+//         }
+//         console.log("product=======",product)
+
+//         const newDeal = new DealOfTheDay({ productId, title, });
+//         await newDeal.save();
+
+      
+//         res.status(201).json({ message: 'Deal of the Day created successfully', dealOfTheDay: newDeal });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 // Create a Deal of the Day
 export const createDealOfTheDay = async (req, res) => {
     try {
         const { productId, title } = req.body;
-       console.log("productId=======",productId)
-       // Check if the product exists
-       const product = await Product.findById(productId);
-       if (!product) {
-           return res.status(404).json({ message: 'Product not found' });
-        }
-        console.log("product=======",product)
 
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        console.log("product=======", product);
 
         const newDeal = new DealOfTheDay({ productId, title });
         await newDeal.save();
 
-      
-        res.status(201).json({ message: 'Deal of the Day created successfully', dealOfTheDay: newDeal });
+        const populatedDeal = await newDeal.populate({
+            path: 'productId',
+            select: 'name price description thumbnail category' // Specify the fields to return
+        });
+
+        res.status(201).json({ message: 'Deal of the Day created successfully', dealOfTheDay: populatedDeal });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -32,7 +54,7 @@ export const getAllDealsOfTheDay = async (req, res) => {
     try {
         const deals = await DealOfTheDay.find().populate({
             path: 'productId',
-            select: 'name price description thumbnail' // Specify the fields to return
+            select: 'name price description thumbnail category', // Specify the fields to return
         });
         res.status(200).json(deals);
     } catch (error) {
@@ -63,7 +85,8 @@ export const getDealOfTheDayById = async (req, res) => {
 export const updateDealOfTheDay = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedDeal = await DealOfTheDay.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedDeal = await DealOfTheDay.findByIdAndUpdate(id, req.body, 
+            { new: true });
 
         if (!updatedDeal) {
             return res.status(404).json({ message: 'Deal of the Day not found' });

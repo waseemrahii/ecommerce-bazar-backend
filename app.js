@@ -26,6 +26,7 @@ import featuredeal from "./routes/featureDealRoutes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+
 const app = express();
 
 app.use(cors({

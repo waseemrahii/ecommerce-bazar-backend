@@ -48,6 +48,10 @@ const vendorSchema = new Schema({
   banner: {
     type: String,
   },
+  role: {
+    type: String,
+    default: "vender",
+  },
 });
 
 export default model('Vendor', vendorSchema);
