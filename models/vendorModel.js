@@ -50,7 +50,7 @@ const vendorSchema = new Schema({
   },
   role: {
     type: String,
-    default: "vender",
+    default: "vendor",
   },
 });
 

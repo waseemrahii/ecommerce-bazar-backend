@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const orderSchema = new mongoose.Schema({
@@ -45,9 +46,9 @@ const orderSchema = new mongoose.Schema({
             city: String,
             state: String,
             zipCode: String,
-            country: String,
-            phone: String
-        }
+            country: String
+        },
+        required: true
     },
     billingAddress: {
         type: {
@@ -55,9 +56,9 @@ const orderSchema = new mongoose.Schema({
             city: String,
             state: String,
             zipCode: String,
-            country: String,
-            phone: String
-        }
+            country: String
+        },
+        required: true
     },
     createdAt: {
         type: Date,
@@ -75,20 +76,7 @@ orderSchema.pre('save', function (next) {
     next();
 });
 
-// Populate function to include customer and vendor information
-orderSchema.pre('findOne', function (next) {
-    this.populate({
-        path: 'customer',
-        select: 'firstName lastName permanentAddress officeShippingAddress officeBillingAddress'
-    }).populate({
-        path: 'vendor',
-        select: 'firstName lastName shopName address'
-    }).populate({
-        path: 'products',
-        select: 'name description price sku'
-    });
-});
-
-const Order = mongoose.model('Order', orderSchema);
+// Check if the model is already registered
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
 export default Order;

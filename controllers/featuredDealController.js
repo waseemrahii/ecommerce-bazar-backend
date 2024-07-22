@@ -28,26 +28,6 @@ export const createFeatureDeal = async (req, res) => {
 };
 
 
-// export const getFeatureDeals = async (req, res) => {
-//     try {
-//         const FeatureDeals = await FeatureDeal.find().populate({
-//             path: 'productId',
-//             select: 'name price description thumbnail' // Specify the fields to return
-//         });
-
-//         // Check expiration for each deal
-//         FeatureDeals.forEach((deal) => {
-//             if (checkExpiration(deal)) {
-//                 deal.status = 'expired'; // Update status to expired
-//                 deal.save(); // Save updated status to DB
-//             }
-//         });
-
-//         res.status(200).json(FeatureDeals);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 
 export const getFeatureDeals = async (req, res) => {
     try {
@@ -186,24 +166,6 @@ export const deleteFeatureDeal = async (req, res) => {
     }
 };
 
-
-// Get a specific feature deal by ID
-// export const getFeatureDealById = async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const featureDeal = await FeatureDeal.findById(id).populate({
-//             path: 'productId',
-//             select: 'name price description thumbnail' // Specify the fields to return
-//         });
-//         // Adjust the populate field based on your schema
-//         if (!featureDeal) {
-//             return res.status(404).json({ message: 'Feature deal not found' });
-//         }
-//         res.status(200).json(featureDeal);
-//     } catch (error) {
-//         res.status(500).json({ message: 'Server error', error });
-//     }
-// };
 
 
 // Get a specific feature deal by ID

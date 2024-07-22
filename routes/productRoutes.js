@@ -1,75 +1,10 @@
-// import express from "express";
-
-// import {
-// 	getProducts,
-// 	getProduct,
-// 	createProduct,
-// 	updateProduct,
-// 	deleteProduct,
-// 	createProductReview,
-// 	getTopProducts,
-// } from "../controllers/productController.js";
-// import checkObjectId from "../middleware/checkObjectId.js";
-// import { protect, restrictTo } from "../middleware/authMiddleware.js";
-
-// const router = express.Router();
-
-// router
-// 	.route("/")
-// 	.get(getProducts)
-// 	.post(protect, restrictTo("admin"), createProduct);
-
-// router.route("/:id/reviews").post(protect, checkObjectId, createProductReview);
-
-// router.get("/top", getTopProducts);
-// router
-// 	.route("/:id")
-// 	.get(checkObjectId, getProduct)
-// 	.put(protect, restrictTo("admin"), checkObjectId, updateProduct)
-// 	.delete(protect, restrictTo("admin"), checkObjectId, deleteProduct);
-
-// export default router;
-
-
-
-
-
-// import express from 'express';
-// import {
-//     createProduct,
-//     getAllProducts,
-//     getProductById,
-//     updateProductImages,
-//     deleteProduct,
-//     addReview,
-// 	getProductReviews,
-// 	getProductsByVendor,
-// 	updateProductStatus
-// } from '../controllers/productController.js';
-// import { uploadThumbnail, uploadImages } from '../config/multer-config.js';
-
-// const router = express.Router();
-
-// // Product routes
-// router.post('/create', createProduct); // Handles both thumbnail and images
-// router.put('/:id/images', uploadImages, updateProductImages);
-// router.get('/', getAllProducts);
-// router.get('/:id', getProductById);
-// router.delete('/:id', deleteProduct);
-// router.post('/:productId/reviews', addReview);
-// router.get('/:productId/reviews', getProductReviews);
-// router.get('/:venderId/vender', getProductsByVendor);
-// // Route for updating product status
-// router.put('/:id/status', updateProductStatus);
-// export default router;
-
-
 // internal router
 
 import express from 'express';
 import multer from 'multer';
 import {
     createProduct,
+    updateProductImages,
     getAllProducts,
     getProductById,
     deleteProduct,
@@ -80,7 +15,17 @@ import {
     getFeaturedProducts,
     getLatestProducts,
     getTopRatedProducts,
-    // getLimitedStockedProducts
+    sellProduct,
+    getLimitedStockedProducts,
+    getAllPendingProducts,
+    getAllApprovedProducts,
+    getPendingProductsByVendor,
+    getApprovedProductsByVendor,
+    getFilteredProducts,
+    getNewestProducts,
+    getProductsByVendor,
+    getNewestProductByVendor,
+    getDeniedProductsByVendor
 } from '../controllers/productController.js';
 
 const router = express.Router();
@@ -106,9 +51,16 @@ router.get('/', getAllProducts);
 router.get('/feature-product', getFeaturedProducts);
 router.get('/latest-product', getLatestProducts);
 router.get('/top-rated', getTopRatedProducts);
-// router.get('/limited-stock', getLimitedStockedProducts);
-
+router.get('/pending', getAllPendingProducts);
+router.get('/approved', getAllApprovedProducts);
+router.get('/filtered', getFilteredProducts);
+router.get('/newest', getNewestProducts);
 // Dynamic routes
+router.get('/vendor/:vendorId/vendor-product', getProductsByVendor);
+router.get('/vendor/:vendorId/pending', getPendingProductsByVendor);
+router.get('/vendor/:vendorId/denied', getDeniedProductsByVendor);
+router.get('/vendor/:vendorId/approved', getApprovedProductsByVendor);
+router.get('/vendor/:vendorId/newest', getNewestProductByVendor);
 router.post('/:productId/reviews', addReview);
 router.get('/:productId/reviews', getProductReviews);
 router.put('/:id/status', updateProductStatus);
@@ -116,4 +68,8 @@ router.put('/:id/feature', updateProductFeaturedStatus);
 router.get('/:id', getProductById);
 router.delete('/:id', deleteProduct);
 
+
 export default router;
+
+
+

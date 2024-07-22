@@ -4,26 +4,7 @@ import DealOfTheDay from '../models/dealOfTheDayModel.js';
 import Product from '../models/ProductModels.js';
 
 
-// // Create a Deal of the Day
-// export const createDealOfTheDay = async (req, res) => {
-//     try {
-//         const { productId, title } = req.body;
-  
-//        const product = await Product.findById(productId);
-//        if (!product) {
-//            return res.status(404).json({ message: 'Product not found' });
-//         }
-//         console.log("product=======",product)
 
-//         const newDeal = new DealOfTheDay({ productId, title, });
-//         await newDeal.save();
-
-      
-//         res.status(201).json({ message: 'Deal of the Day created successfully', dealOfTheDay: newDeal });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 // Create a Deal of the Day
 export const createDealOfTheDay = async (req, res) => {
     try {
