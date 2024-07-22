@@ -8,11 +8,10 @@ import {
     getOrdersForVendor,
     getAllOrdersForVendor,
     getOrdersByStatus,
- 
     getOrdersByCustomer,
     getOrderByIdForCustomer,
     checkOrderStatus,
-  
+    getOrdersForVendorByStatus  
 } from "../controllers/orderControllers.js";
 
 
@@ -26,11 +25,11 @@ router.get('/:id', getOrderById);
 router.put('/:id/status', updateOrderStatus);
 router.delete('/:id', deleteOrder);
 
+router.get('/status/:status', getOrdersByStatus);  // Status-based routes
 // Vendor-specific routes
 router.get('/vendor/:vendorId', getOrdersForVendor); // For all products of a specific vendor
 router.get('/vendor/:vendorId/all', getAllOrdersForVendor); // For all orders of a specific vendor
-// Status-based routes
-router.get('/status/:status', getOrdersByStatus);
+router.get('/vendor/:vendorId/status/:status', getOrdersForVendorByStatus); // Add new route
 
 // Customer-specific routes
 router.get('/customer/:customerId', getOrdersByCustomer);

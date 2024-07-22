@@ -138,8 +138,6 @@ export const getOrdersByStatus = async (req, res) => {
 
 
 
-
-// Get orders by customer
 export const getOrdersByCustomer = async (req, res) => {
     try {
         const customerId = req.params.customerId;
@@ -173,6 +171,27 @@ export const checkOrderStatus = async (req, res) => {
             return res.status(404).json({ message: 'Order not found' });
         }
         res.status(200).json({ orderStatus: order.orderStatus });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+// Get orders for a specific vendor by status
+export const getOrdersForVendorByStatus = async (req, res) => {
+    try {
+        const { vendorId, status } = req.params;
+    if (!vendorId ||!status) {
+            return res.status(400).json({ message: 'Vendor ID and status are required' });
+        }     
+        const products = await Product.find({ userId: vendorId }).select('_id');
+        const productIds = products.map(product => product._id);
+        const orders = await populateOrderDetails(Order.find({ products: { $in: productIds }, orderStatus: status }));
+        
+        if (!orders.length) {
+            return res.status(404).json({ message: 'No orders found with the specified status for this vendor' });
+        }
+
+        res.status(200).json(orders);
     } catch (error) {
         handleError(res, error);
     }
