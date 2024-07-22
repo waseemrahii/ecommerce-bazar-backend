@@ -30,10 +30,7 @@ const populateOrderDetails = (query) => {
             path: 'vendor',
             select: 'firstName lastName phoneNumber email shopName address vendorImage logo banner status'
         })
-        .populate({
-            path: 'userId', // Assuming `userId` references a User model
-            select: 'firstName lastName email role'
-        });
+     
 };
 
 // Create a new order
@@ -138,88 +135,6 @@ export const getOrdersByStatus = async (req, res) => {
     }
 };
 
-// Get pending orders
-export const getPendingOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'pending');
-};
-
-// Get confirmed orders
-export const getConfirmedOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'confirmed');
-};
-
-// Get packaging orders
-export const getPackagingOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'packaging');
-};
-
-// Get out for delivery orders
-export const getOutForDeliveryOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'out_for_delivery');
-};
-
-// Get delivered orders
-export const getDeliveredOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'delivered');
-};
-
-// Get failed to deliver orders
-export const getFailedToDeliverOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'failed_to_deliver');
-};
-
-// Get returned orders
-export const getReturnedOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'returned');
-};
-
-// Get canceled orders
-export const getCanceledOrders = async (req, res) => {
-    return getOrdersByStatus(req, res, 'canceled');
-};
-
-
-
-
-// Get pending orders (Admin-specific)
-export const getPendingOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'pending');
-};
-
-// Get confirmed orders (Admin-specific)
-export const getConfirmedOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'confirmed');
-};
-
-// Get packaging orders (Admin-specific)
-export const getPackagingOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'packaging');
-};
-
-// Get out for delivery orders (Admin-specific)
-export const getOutForDeliveryOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'out_for_delivery');
-};
-
-// Get delivered orders (Admin-specific)
-export const getDeliveredOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'delivered');
-};
-
-// Get failed to deliver orders (Admin-specific)
-export const getFailedToDeliverOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'failed_to_deliver');
-};
-
-// Get returned orders (Admin-specific)
-export const getReturnedOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'returned');
-};
-
-// Get canceled orders (Admin-specific)
-export const getCanceledOrdersAdmin = async (req, res) => {
-    return getOrdersByStatus(req, res, 'canceled');
-};
 
 
 

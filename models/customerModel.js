@@ -1,94 +1,87 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
 
-const orderSchema = new mongoose.Schema({
-    customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer',
-        required: true
-    },
-    vendor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor',
-        required: true
-    },
-    products: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
-    }],
-    orderStatus: {
-        type: String,
-        enum: [
-            'pending',
-            'confirmed',
-            'packaging',
-            'out_for_delivery',
-            'delivered',
-            'failed_to_deliver',
-            'returned',
-            'canceled'
-        ],
-        default: 'pending'
-    },
-    totalAmount: {
-        type: Number,
-        required: true
-    },
-    paymentMethod: {
-        type: String,
-        enum: ['credit_card', 'paypal', 'bank_transfer', 'cash_on_delivery'],
-        required: true
-    },
-    shippingAddress: {
-        type: {
-            address: String,
-            city: String,
-            state: String,
-            zipCode: String,
-            country: String,
-            phone: String
-        }
-    },
-    billingAddress: {
-        type: {
-            address: String,
-            city: String,
-            state: String,
-            zipCode: String,
-            country: String,
-            phone: String
-        }
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
+const addressSchema = new mongoose.Schema({
+	name: {
+		type: String,
+	},
+	address: {
+		type: String,
+	},
+	phone: {
+		type: String,
+	},
 });
 
-// Middleware to update `updatedAt` field before saving
-orderSchema.pre('save', function (next) {
-    this.updatedAt = Date.now();
-    next();
+const customerSchema = new mongoose.Schema(
+	{
+		firstName: {
+			type: String,
+			required: [true, "Please tell us your name."],
+		},
+		lastName: {
+			type: String,
+		},
+		email: {
+			type: String,
+			required: [true, "Please provide your email address."],
+			unique: true,
+			lowercase: true,
+			validate: [validator.isEmail, "Please provide a valid email address."],
+		},
+		phoneNumber: {
+			type: String,
+			unique: true,
+		},
+		image: {
+			type: String,
+		},
+		role: {
+			type: String,
+			enum: ["customer"],
+			default: "customer",
+		},
+		referCode: {
+			type: String,
+		},
+		password: {
+			type: String,
+			required: [true, "Please provide a password."],
+			minlength: 8,
+			select: false,
+		},
+		status: {
+			type: String,
+			enum: ["active", "inactive"],
+			default: "active",
+		},
+		permanentAddress: addressSchema,
+		officeShippingAddress: addressSchema,
+		officeBillingAddress: addressSchema,
+	},
+	{
+		timestamps: true,
+	}
+);
+
+customerSchema.methods.correctPassword = async function (
+	candidatePassword,
+	customerPassword
+) {
+	return await bcrypt.compare(candidatePassword, customerPassword);
+};
+
+customerSchema.pre("save", async function (next) {
+	// Only work when the password is not modified
+	if (!this.isModified("password")) return next();
+
+	// Hash the password using cost of 12
+	this.password = await bcrypt.hash(this.password, 12);
+
+	next();
 });
 
-// Populate function to include customer and vendor information
-orderSchema.pre('findOne', function (next) {
-    this.populate({
-        path: 'customer',
-        select: 'firstName lastName permanentAddress officeShippingAddress officeBillingAddress'
-    }).populate({
-        path: 'vendor',
-        select: 'firstName lastName shopName address'
-    }).populate({
-        path: 'products',
-        select: 'name description price sku'
-    });
-});
+const Customer = mongoose.model("Customer", customerSchema);
 
-const Order = mongoose.model('Order', orderSchema);
-
-export default Order;
+export default Customer;
