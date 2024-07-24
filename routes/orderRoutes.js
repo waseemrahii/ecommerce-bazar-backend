@@ -11,7 +11,8 @@ import {
     getOrdersByCustomer,
     getOrderByIdForCustomer,
     checkOrderStatus,
-    getOrdersForVendorByStatus  
+    getOrdersForVendorByStatus ,
+    getOrdersWithFilters
 } from "../controllers/orderControllers.js";
 
 
@@ -21,6 +22,7 @@ const router = express.Router();
 // Order routes
 router.post('/', createOrder);
 router.get('/', getAllOrders);
+router.get('/filter', getOrdersWithFilters);
 router.get('/:id', getOrderById);
 router.put('/:id/status', updateOrderStatus);
 router.delete('/:id', deleteOrder);
@@ -36,4 +38,5 @@ router.get('/customer/:customerId', getOrdersByCustomer);
 router.get('/customer/:customerId/order/:orderId', getOrderByIdForCustomer);
 router.get('/customer/:customerId/order/:orderId/status', checkOrderStatus);
 
+// Route for filtering and searching
 export default router;

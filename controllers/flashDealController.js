@@ -79,7 +79,7 @@ export const addProductToFlashDeal = async (req, res) => {
     try {
         const { id } = req.params;
         const { productId } = req.body;
-        console.log("producct id -----", productId)
+        console.log("producct id -----", product)
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });

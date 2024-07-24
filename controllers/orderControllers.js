@@ -3,6 +3,10 @@ import Product from '../models/ProductModels.js';
 import Customer from '../models/customerModel.js';
 import Vendor from '../models/vendorModel.js';
 import User from '../models/userModel.js'; // Import User model if needed
+import Category from '../models/categoryModel.js'; // Import Category model
+import SubCategory from '../models/subCategoryModel.js'; // Import SubCategory model
+import Brand from '../models/brandModel.js'; // Import Brand model
+
 
 // Error handling middleware
 const handleError = (res, error) => {
@@ -191,6 +195,66 @@ export const getOrdersForVendorByStatus = async (req, res) => {
             return res.status(404).json({ message: 'No orders found with the specified status for this vendor' });
         }
 
+        res.status(200).json(orders);
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+
+
+export const getOrdersWithFilters = async (req, res) => {
+    try {
+        const { startDate, endDate, dataType, searchQuery, category, subCategory, brand, status, vendorId, customerId } = req.query;
+        const query = {};
+
+        if (startDate && endDate) {
+            query.createdAt = { $gte: new Date(startDate), $lte: new Date(endDate) };
+        }
+        if (status) {
+            query.orderStatus = status;
+        }
+        if (vendorId && mongoose.Types.ObjectId.isValid(vendorId)) {
+            query.vendor = vendorId;
+        }
+        if (customerId && mongoose.Types.ObjectId.isValid(customerId)) {
+            query.customer = customerId;
+        }
+        if (category) {
+            const categoryDoc = await Category.findOne({ name: { $regex: category, $options: 'i' } });
+            if (categoryDoc) {
+                query['products.category'] = categoryDoc._id;
+            } else {
+                return res.status(404).json({ message: 'Category not found' });
+            }
+        }
+        if (subCategory) {
+            const subCategoryDoc = await SubCategory.findOne({ name: { $regex: subCategory, $options: 'i' } });
+            if (subCategoryDoc) {
+                query['products.subCategory'] = subCategoryDoc._id;
+            } else {
+                return res.status(404).json({ message: 'SubCategory not found' });
+            }
+        }
+        if (brand) {
+            const brandDoc = await Brand.findOne({ name: { $regex: brand, $options: 'i' } });
+            if (brandDoc) {
+                query['products.brand'] = brandDoc._id;
+            } else {
+                return res.status(404).json({ message: 'Brand not found' });
+            }
+        }
+        if (dataType && searchQuery) {
+            const searchFields = {
+                product: 'products.name',
+                customer: 'customer.firstName', // Adjust field based on your schema
+                vendor: 'vendor.shopName', // Adjust field based on your schema
+                order: '_id'
+            };
+            query[searchFields[dataType]] = { $regex: searchQuery, $options: 'i' };
+        }
+
+        const orders = await populateOrderDetails(Order.find(query));
         res.status(200).json(orders);
     } catch (error) {
         handleError(res, error);

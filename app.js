@@ -67,6 +67,7 @@ app.use("/api/deal-of-day", dealOfDay);
 app.use("/api/feature-deals", featuredeal);
 
 
+
 app.use("/", (req, res) => {
   res.send("Ecommerce Bazaar API is Running");
 });
