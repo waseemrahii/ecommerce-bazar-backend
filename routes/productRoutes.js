@@ -25,7 +25,8 @@ import {
     getNewestProducts,
     getProductsByVendor,
     getNewestProductByVendor,
-    getDeniedProductsByVendor
+    getDeniedProductsByVendor,
+    updateProduct
 } from '../controllers/productController.js';
 
 const router = express.Router();
@@ -65,6 +66,7 @@ router.post('/:productId/reviews', addReview);
 router.get('/:productId/reviews', getProductReviews);
 router.put('/:id/status', updateProductStatus);
 router.put('/:id/feature', updateProductFeaturedStatus);
+router.put('/:id', updateProduct);
 router.get('/:id', getProductById);
 router.delete('/:id', deleteProduct);
 

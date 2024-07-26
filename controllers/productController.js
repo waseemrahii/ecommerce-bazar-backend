@@ -6,7 +6,7 @@ import Brand from '../models/brandModel.js';
 import Color from '../models/colorModel.js';
 import Customer from '../models/customerModel.js';
 import Vendor from '../models/vendorModel.js';
-
+import Attribute from '../models/attributeModel.js';
 // Utility function for sending error responses
 const sendErrorResponse = (res, error) => {
     res.status(500).json({ message: error.message });
@@ -27,7 +27,8 @@ const populateProductDetails = (query) => {
         .populate('category', 'name')
         .populate('subCategory', 'name')
         .populate('brand', 'name')
-        .populate('color', 'name');
+        .populate('colors', 'name')
+        .populate('attributes', 'name');
 };
 
 // Format the product response data
@@ -62,16 +63,16 @@ export const createProduct = async (req, res) => {
             taxAmount,
             taxIncluded,
             minimumOrderQty,
-            quantity,
+            shippingCost,
             stock,
             isFeatured,
-            color,
-            attributeType,
+            colors,
+            attributes,
             size,
             videoLink,
             userId,
             userType,
-            
+           
         } = req.body;
 
         const categoryObj = await validateSlug(Category, category);
@@ -83,10 +84,16 @@ export const createProduct = async (req, res) => {
             return res.status(400).json({ message: 'Invalid brand ID' });
         }
 
-        const colorObj = await Color.findById(color);
-        if (color && !colorObj) {
-            return res.status(400).json({ message: 'Invalid color ID' });
+        const colorObjs = await Color.find({ _id: { $in: colors } });
+        if (colors && colorObjs.length !== colors.length) {
+            return res.status(400).json({ message: 'One or more color IDs are invalid' });
         }
+
+            // Validate attributes
+            const attributeObjs = attributes ? await Attribute.find({ _id: { $in: attributes } }) : [];
+            if (attributes && attributeObjs.length !== attributes.length) {
+                return res.status(400).json({ message: 'One or more attribute IDs are invalid' });
+            }
 
         const newProduct = new Product({
             name,
@@ -94,7 +101,7 @@ export const createProduct = async (req, res) => {
             category: categoryObj._id,
             subCategory: subCategoryObj ? subCategoryObj._id : undefined,
             subSubCategory: subSubCategoryObj ? subSubCategoryObj._id : undefined,
-            brand,
+            brand: brandObj._id,
             productType,
             digitalProductType,
             sku,
@@ -107,16 +114,15 @@ export const createProduct = async (req, res) => {
             taxAmount,
             taxIncluded,
             minimumOrderQty,
-            quantity,
+            shippingCost,
             stock,
             isFeatured: isFeatured || false,
-            color,
-            attributeType,
+            colors: colorObjs.map(color => color._id),
+            attributes: attributeObjs.map(attribute => attribute._id),       
             size,
             videoLink,
             userId,
             userType,
-    
             thumbnail: req.files['thumbnail'] ? req.files['thumbnail'][0].path : undefined,
             images: req.files['images'] ? req.files['images'].map(file => file.path) : [],
             status: 'pending',
@@ -127,6 +133,7 @@ export const createProduct = async (req, res) => {
         sendErrorResponse(res, error);
     }
 };
+
 
 // Update product images
 export const updateProductImages = async (req, res) => {
@@ -178,7 +185,8 @@ export const getAllProducts = async (req, res) => {
             .populate('category', 'name')
             .populate('subCategory', 'name')
             .populate('brand', 'name')
-            .populate('color', 'name')
+            .populate('colors', 'name')
+            .populate('attributes', 'name')
             .sort(sortOptions)
             .skip(skip)
             .limit(parseInt(limit));
@@ -669,6 +677,113 @@ export const getNewestProductByVendor = async (req, res) => {
         }
 
         res.status(200).json(product); // Return the single newest product
+    } catch (error) {
+        sendErrorResponse(res, error);
+    }
+};
+
+
+
+
+// Update product
+export const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const {
+            name,
+            description,
+            category,
+            subCategorySlug,
+            subSubCategorySlug,
+            brand,
+            productType,
+            digitalProductType,
+            sku,
+            unit,
+            tags,
+            price,
+            discount,
+            discountType,
+            discountAmount,
+            taxAmount,
+            taxIncluded,
+            minimumOrderQty,
+            shippingCost,
+            stock,
+            isFeatured,
+            colors,
+            attributes,
+            size,
+            videoLink,
+        } = req.body;
+
+        // Validate and get category, sub-category, and sub-sub-category
+        const categoryObj = await validateSlug(Category, category);
+        const subCategoryObj = await validateSlug(SubCategory, subCategorySlug);
+        const subSubCategoryObj = await validateSlug(SubSubCategory, subSubCategorySlug);
+
+        // Validate brand
+        const brandObj = await Brand.findById(brand);
+        if (!brandObj) {
+            return res.status(400).json({ message: 'Invalid brand ID' });
+        }
+
+        // Validate colors
+        const colorObjs = await Color.find({ _id: { $in: colors } });
+        if (colors && colorObjs.length !== colors.length) {
+            return res.status(400).json({ message: 'One or more color IDs are invalid' });
+        }
+
+        // Validate attributes
+        const attributeObjs = attributes ? await Attribute.find({ _id: { $in: attributes } }) : [];
+        if (attributes && attributeObjs.length !== attributes.length) {
+            return res.status(400).json({ message: 'One or more attribute IDs are invalid' });
+        }
+
+        // Find and update the product
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        product.name = name || product.name;
+        product.description = description || product.description;
+        product.category = categoryObj ? categoryObj._id : product.category;
+        product.subCategory = subCategoryObj ? subCategoryObj._id : product.subCategory;
+        product.subSubCategory = subSubCategoryObj ? subSubCategoryObj._id : product.subSubCategory;
+        product.brand = brandObj ? brandObj._id : product.brand;
+        product.productType = productType || product.productType;
+        product.digitalProductType = digitalProductType || product.digitalProductType;
+        product.sku = sku || product.sku;
+        product.unit = unit || product.unit;
+        product.tags = tags || product.tags;
+        product.price = price || product.price;
+        product.discount = discount || product.discount;
+        product.discountType = discountType || product.discountType;
+        product.discountAmount = discountAmount || product.discountAmount;
+        product.taxAmount = taxAmount || product.taxAmount;
+        product.taxIncluded = taxIncluded || product.taxIncluded;
+        product.minimumOrderQty = minimumOrderQty || product.minimumOrderQty;
+        product.quantity = quantity || product.quantity;
+        product.stock = stock || product.stock;
+        product.isFeatured = isFeatured !== undefined ? isFeatured : product.isFeatured;
+        product.colors = colorObjs.length ? colorObjs.map(color => color._id) : product.colors;
+        product.attributes = attributeObjs.length ? attributeObjs.map(attribute => attribute._id) : product.attributes;
+        product.size = size || product.size;
+        product.videoLink = videoLink || product.videoLink;
+
+        // Handle file uploads
+        if (req.files) {
+            if (req.files['thumbnail']) {
+                product.thumbnail = req.files['thumbnail'][0].path;
+            }
+            if (req.files['images']) {
+                product.images = req.files['images'].map(file => file.path);
+            }
+        }
+
+        await product.save();
+        res.status(200).json({ message: 'Product updated successfully', product });
     } catch (error) {
         sendErrorResponse(res, error);
     }

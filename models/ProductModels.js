@@ -1,4 +1,5 @@
 
+
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
@@ -7,6 +8,8 @@ const reviewSchema = new mongoose.Schema({
     reviewText: { type: String, required: true },
     rating: { type: Number, required: true, min: 1, max: 5 },
 }, { timestamps: true });
+
+
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -65,6 +68,7 @@ const productSchema = new mongoose.Schema({
     discountAmount: {
         type: Number
     },
+
     taxAmount: {
         type: Number
     },
@@ -72,13 +76,12 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         required: [true, "Tax inclusion status is required"]
     },
+    shippingCost: {
+        type: Number
+    },
     minimumOrderQty: {
         type: Number,
         required: [true, "Minimum order quantity is required"]
-    },
-    quantity: {
-        type: Number,
-        required: [true, "Quantity is required"]
     },
     stock: {
         type: Number,
@@ -88,16 +91,8 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    color: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Color'
-    },
-    attributeType: {
-        type: String
-    },
-    size: {
-        type: String
-    },
+    colors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Color' }], // Reference to Color model
+    attributes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attribute' }], // Reference to Attribute model
     thumbnail: String,
     images: [String],
     videoLink: {
@@ -112,14 +107,14 @@ const productSchema = new mongoose.Schema({
     userType: { 
         type: String, 
         enum: ['vendor', 'admin'],
-         required: true 
-        },
+        required: true 
+    },
     reviews: [reviewSchema]
 }, {
     timestamps: true
 });
+
 productSchema.plugin(mongoosePaginate);
 const Product = mongoose.model('Product', productSchema);
+
 export default Product;
-
-

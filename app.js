@@ -23,6 +23,9 @@ import flashDeal from "./routes/flashDealRoutes.js";
 import dealOfDay from "./routes/dealOfTheDayRoutes.js";
 import featuredeal from "./routes/featureDealRoutes.js";
 import oderRoutes from "./routes/orderRoutes.js";
+import refundRoutes from "./routes/refundRoutes.js";
+import attributeRoutes from "./routes/attributeRoutes.js";
+import coupons from "./routes/couponRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,14 +33,18 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
+// app.use(cors({
+//   origin: ['http://localhost:5173','http://localhost:5174',
+//      'https://baaazaaradmin.ecommercebaazaar.com/', 
+//      'https://ecommercebaazaar.com/'],
+//   credentials: true,
+// }));
+
+
 app.use(cors({
-  origin: ['http://localhost:5173','http://localhost:5174',
-     'https://baaazaaradmin.ecommercebaazaar.com/', 
-     'https://ecommercebaazaar.com/'],
+  origin: '*',  
   credentials: true,
 }));
-
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -58,13 +65,17 @@ app.use("/api/sub-categories", subCategoryRoutes);
 app.use("/api/sub-sub-categories", subSubCategoryRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/api/products", productRoutes);
+
+app.use('/api/attributes', attributeRoutes);
 app.use("/api/orders", oderRoutes);
+app.use("/api/refunds", refundRoutes);
 app.use("/api/colors", colorRoutes);
 app.use("/api/whishlist", whishlist);
 app.use("/api/banner", banner);
 app.use("/api/flash-deals", flashDeal);
 app.use("/api/deal-of-day", dealOfDay);
 app.use("/api/feature-deals", featuredeal);
+app.use("/api/coupons", coupons );
 
 
 
