@@ -1,0 +1,57 @@
+2024-07-28T19:40:11.584Z [error]: The client is closed
+2024-07-28T19:45:23.340Z [error]: The client is closed
+2024-07-29T07:51:42.325Z [error]: Cast to ObjectId failed for value "null" (type string) at path "userId" for model "Product"
+2024-07-29T07:51:43.431Z [error]: Cast to ObjectId failed for value "null" (type string) at path "userId" for model "Product"
+2024-07-29T07:53:10.650Z [error]: Cast to ObjectId failed for value "null" (type string) at path "userId" for model "Product"
+2024-07-29T07:53:10.941Z [error]: Cast to ObjectId failed for value "null" (type string) at path "userId" for model "Product"
+2024-07-29T09:11:41.227Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "Product"
+2024-07-29T09:11:58.132Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "Product"
+2024-07-29T09:12:34.106Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:12:34.119Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:50.909Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:50.973Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:54.097Z [error]: Cast to ObjectId failed for value "pending" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:54.113Z [error]: Cast to ObjectId failed for value "pending" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:59.166Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:20:59.180Z [error]: Cast to ObjectId failed for value "approved" (type string) at path "_id" for model "Product"
+2024-07-29T09:21:02.527Z [error]: Cast to ObjectId failed for value "denied" (type string) at path "_id" for model "Product"
+2024-07-29T09:21:02.537Z [error]: Cast to ObjectId failed for value "denied" (type string) at path "_id" for model "Product"
+2024-07-29T09:24:22.713Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "Product"
+2024-07-29T09:43:49.708Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "userId" for model "Product"
+2024-07-29T09:43:49.776Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "userId" for model "Product"
+2024-07-29T10:45:06.530Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D241B7fsdas" }
+2024-07-29T10:45:22.304Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D241B7fsdas" }
+2024-07-29T10:59:45.901Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "userId" for model "Product"
+2024-07-29T10:59:46.011Z [error]: Cast to ObjectId failed for value "undefined" (type string) at path "userId" for model "Product"
+2024-07-29T11:25:06.930Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D241B7fsda" }
+2024-07-29T11:39:01.456Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D241B7fsdasdsd" }
+2024-07-29T12:09:34.213Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D24sd1B7332kjh" }
+2024-07-29T12:09:35.517Z [error]: E11000 duplicate key error collection: newbazaradmin.products index: sku_1 dup key: { sku: "D24sd1B7332kjh" }
+2024-07-29T19:31:34.196Z [error]: Validation error: Image is required
+2024-07-29T19:55:20.493Z [error]: Validation error: Image is required
+2024-07-29T19:55:30.928Z [error]: Validation error: Image is required
+2024-07-29T20:06:53.705Z [error]: Cast to ObjectId failed for value "1" (type string) at path "_id" for model "FlashDeal"
+2024-07-29T20:06:53.707Z [error]: Cast to ObjectId failed for value "1" (type string) at path "_id" for model "FlashDeal"
+2024-07-29T20:11:20.204Z [error]: Validation error: Image is required
+2024-07-29T20:11:24.725Z [error]: Validation error: Image is required
+2024-07-29T20:12:05.145Z [error]: Validation error: Image is required
+2024-07-29T20:16:49.857Z [error]: Validation error: Image is required
+2024-07-29T20:24:34.837Z [error]: Validation error: Image is required
+2024-07-29T20:24:48.975Z [error]: Validation error: Image is required
+2024-07-29T20:26:36.074Z [error]: Validation error: Image is required
+2024-07-29T20:26:40.844Z [error]: Validation error: Image is required
+2024-07-30T05:11:08.531Z [error]: Validation error: Image is required
+2024-07-30T05:17:39.217Z [error]: Validation error: Image is required
+2024-07-30T05:19:49.367Z [error]: Validation error: Image is required
+2024-07-30T05:40:55.816Z [error]: Cache invalidation error: client is not defined
+2024-07-30T05:50:05.576Z [error]: Cache invalidation error: client is not defined
+2024-07-30T05:53:39.457Z [error]: Cache invalidation error: invalidateCacheByPattern is not defined
+2024-07-30T17:47:59.482Z [error]: deleteCache is not defined
+2024-07-30T17:49:08.379Z [error]: deleteCache is not defined
+2024-07-30T17:55:17.656Z [error]: deleteCache is not defined
+2024-07-30T17:55:17.658Z [error]: deleteCache is not defined
+2024-07-30T17:55:21.272Z [error]: deleteCache is not defined
+2024-07-30T17:55:21.274Z [error]: deleteCache is not defined
+2024-07-31T10:19:26.863Z [error]: getaddrinfo ENOTFOUND ac-iqgq5gy-shard-00-00.zrvhibc.mongodb.net
+2024-07-31T10:19:56.692Z [error]: getaddrinfo ENOTFOUND ac-iqgq5gy-shard-00-00.zrvhibc.mongodb.net
+2024-07-31T11:50:30.209Z [error]: docs is not defined
