@@ -1,5 +1,6 @@
 
 
+<<<<<<< HEAD
 // import FlashDeal from '../models/flashDealModel.js';
 // import Product from '../models/ProductModels.js';
 
@@ -603,6 +604,16 @@ const checkExpiration = (flashDeal) => {
     const currentDate = new Date();
     const endDate = new Date(flashDeal.endDate);
     return currentDate > endDate;
+=======
+import FlashDeal from '../models/flashDealModel.js';
+import Product from '../models/ProductModels.js';
+
+// Function to check expiration status
+const checkExpiration = (flashDeal) => {
+    const currentDate = new Date();
+    const endDate = new Date(flashDeal.endDate);
+    return currentDate > endDate; // Returns true if expired
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 };
 
 // Create Flash Deal
@@ -620,6 +631,7 @@ export const createFlashDeal = async (req, res) => {
         });
 
         await newFlashDeal.save();
+<<<<<<< HEAD
         // Cache the newly created deal with its specific key
         await setCache(`flashDeal_${newFlashDeal._id}`, newFlashDeal);
 
@@ -648,6 +660,20 @@ export const getFlashDeals = async (req, res) => {
         const flashDeals = await FlashDeal.find().populate({
             path: 'productId',
             select: 'name price description thumbnail', // Specify the fields to return
+=======
+        res.status(201).json({ message: 'Flash deal created successfully', flashDeal: newFlashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get Flash Deals
+export const getFlashDeals = async (req, res) => {
+    try {
+        const flashDeals = await FlashDeal.find().populate({
+            path: 'productId',
+            select: 'name price description thumbnail' // Specify the fields to return
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
         });
 
         // Check expiration for each deal
@@ -658,6 +684,7 @@ export const getFlashDeals = async (req, res) => {
             }
         }
 
+<<<<<<< HEAD
         // Cache the fetched deals
         await setCache(cacheKey, flashDeals, 3600); // Cache for 1 hour
         res.status(200).json({
@@ -715,6 +742,10 @@ export const getFlashDealById = async (req, res) => {
         });
     } catch (error) {
         logger.error(`Error in getFlashDealById: ${error.message}`);
+=======
+        res.status(200).json(flashDeals);
+    } catch (error) {
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
         res.status(500).json({ message: error.message });
     }
 };
@@ -723,6 +754,7 @@ export const getFlashDealById = async (req, res) => {
 export const updateFlashDeal = async (req, res) => {
     try {
         const { id } = req.params;
+<<<<<<< HEAD
 
         // Validate request body (Assuming flashDealValidationSchema is imported)
         const { error } = flashDealValidationSchema.validate(req.body);
@@ -774,6 +806,22 @@ export const deleteFlashDeal = async (req, res) => {
     } catch (error) {
         logger.error(error.message);
         sendErrorResponse(res, error);
+=======
+        const { title, startDate, endDate, status } = req.body;
+        const image = req.file ? req.file.path : '';
+        const updateData = { title, startDate, endDate, status, image }; // Include image in update
+
+        const updatedFlashDeal = await FlashDeal.findByIdAndUpdate(id, updateData, { new: true });
+
+        if (checkExpiration(updatedFlashDeal)) {
+            updatedFlashDeal.status = 'expired'; // Automatically set to expired if past due
+            await updatedFlashDeal.save();
+        }
+
+        res.status(200).json({ message: 'Flash deal updated successfully', flashDeal: updatedFlashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
     }
 };
 
@@ -782,13 +830,22 @@ export const addProductToFlashDeal = async (req, res) => {
     try {
         const { id } = req.params;
         const { productId } = req.body;
+<<<<<<< HEAD
 
+=======
+        console.log("producct id -----", product)
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
+<<<<<<< HEAD
 
         const flashDeal = await FlashDeal.findById(id);
+=======
+        const flashDeal = await FlashDeal.findById(id);
+
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
         if (!flashDeal) {
             return res.status(404).json({ message: 'Flash Deal not found' });
         }
@@ -803,6 +860,7 @@ export const addProductToFlashDeal = async (req, res) => {
         flashDeal.activeProducts += 1;
 
         await flashDeal.save();
+<<<<<<< HEAD
         await deleteCache(`flashDeal_${id}`);
         await deleteCache('flashDeals');
 
@@ -885,11 +943,21 @@ export const removeProductFromFlashDeal = async (req, res) => {
     }
 };
 // Update Flash Deal Status
+=======
+        res.status(200).json({ message: 'Product added to Flash Deal successfully', flashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Update the status of a Flash Deal
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 export const updateFlashDealStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
 
+<<<<<<< HEAD
         const validStatuses = ['active', 'inactive', 'expired'];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({ message: 'Invalid status' });
@@ -911,11 +979,31 @@ export const updateFlashDealStatus = async (req, res) => {
 };
 
 // Update Publish Status
+=======
+        const updatedFlashDeal = await FlashDeal.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedFlashDeal) {
+            return res.status(404).json({ message: 'Flash Deal not found' });
+        }
+
+        res.status(200).json({ message: 'Flash Deal status updated successfully', flashDeal: updatedFlashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Update Publish Status of Flash Deal
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 export const updatePublishStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { publish } = req.body;
 
+<<<<<<< HEAD
         // Validate publish status (true/false)
         if (typeof publish !== 'boolean') {
             return res.status(400).json({ message: 'Invalid publish status' });
@@ -936,3 +1024,38 @@ export const updatePublishStatus = async (req, res) => {
         sendErrorResponse(res, error);
     }
 }
+=======
+        const updatedFlashDeal = await FlashDeal.findByIdAndUpdate(
+            id,
+            { publish },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedFlashDeal) {
+            return res.status(404).json({ message: 'Flash Deal not found' });
+        }
+
+        res.status(200).json({ message: 'Publish status updated successfully', flashDeal: updatedFlashDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+// Delete Flash Deal
+export const deleteFlashDeal = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedFlashDeal = await FlashDeal.findByIdAndDelete(id);
+
+        if (!deletedFlashDeal) {
+            return res.status(404).json({ message: 'Flash Deal not found' });
+        }
+
+        res.status(200).json({ message: 'Flash Deal deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a

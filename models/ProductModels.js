@@ -7,11 +7,14 @@ const reviewSchema = new mongoose.Schema({
     customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true },
     reviewText: { type: String, required: true },
     rating: { type: Number, required: true, min: 1, max: 5 },
+<<<<<<< HEAD
     status: {
         type: String,
         enum: ['Active', 'Inactive'],
         default: 'Active'
     },
+=======
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 }, { timestamps: true });
 
 

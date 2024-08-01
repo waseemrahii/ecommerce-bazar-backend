@@ -7,11 +7,19 @@ const orderSchema = new mongoose.Schema({
         ref: 'Customer',
         required: true
     },
+<<<<<<< HEAD
     vendor: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendor',
         required: true
     }],
+=======
+    vendor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor',
+        required: true
+    },
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
     products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',

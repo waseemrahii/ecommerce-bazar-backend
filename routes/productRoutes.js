@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // // internal router
 
 // import express from 'express';
@@ -84,6 +85,9 @@
 // // redis router
 
 
+=======
+// internal router
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 
 import express from 'express';
 import multer from 'multer';
@@ -97,16 +101,33 @@ import {
     getProductReviews,
     updateProductStatus,
     updateProductFeaturedStatus,
+<<<<<<< HEAD
    
+=======
+    getFeaturedProducts,
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
     getLatestProducts,
     getTopRatedProducts,
     sellProduct,
     getLimitedStockedProducts,
+<<<<<<< HEAD
     getFilteredProducts,
     
    
     updateProduct,
     updateReviewStatus
+=======
+    getAllPendingProducts,
+    getAllApprovedProducts,
+    getPendingProductsByVendor,
+    getApprovedProductsByVendor,
+    getFilteredProducts,
+    getNewestProducts,
+    getProductsByVendor,
+    getNewestProductByVendor,
+    getDeniedProductsByVendor,
+    updateProduct
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 } from '../controllers/productController.js';
 
 const router = express.Router();
@@ -129,6 +150,7 @@ router.post('/', upload.fields([{ name: 'thumbnail' }, { name: 'images', maxCoun
 router.get('/', getAllProducts);
 
 // Static routes 
+<<<<<<< HEAD
 
 router.get('/filtered', getFilteredProducts);
 router.get('/latest-product', getLatestProducts);
@@ -139,11 +161,37 @@ router.get('/:productId/update-product-image', updateProductImages);
 router.post('/:productId/reviews', addReview);
 router.get('/:productId/reviews', getProductReviews);
 router.patch('/:reviewId/status', updateReviewStatus);
+=======
+router.get('/feature-product', getFeaturedProducts);
+router.get('/latest-product', getLatestProducts);
+router.get('/top-rated', getTopRatedProducts);
+router.get('/pending', getAllPendingProducts);
+router.get('/approved', getAllApprovedProducts);
+router.get('/filtered', getFilteredProducts);
+router.get('/newest', getNewestProducts);
+// Dynamic routes
+router.get('/vendor/:vendorId/vendor-product', getProductsByVendor);
+router.get('/vendor/:vendorId/pending', getPendingProductsByVendor);
+router.get('/vendor/:vendorId/denied', getDeniedProductsByVendor);
+router.get('/vendor/:vendorId/approved', getApprovedProductsByVendor);
+router.get('/vendor/:vendorId/newest', getNewestProductByVendor);
+router.post('/:productId/reviews', addReview);
+router.get('/:productId/reviews', getProductReviews);
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
 router.put('/:id/status', updateProductStatus);
 router.put('/:id/feature', updateProductFeaturedStatus);
 router.put('/:id', updateProduct);
 router.get('/:id', getProductById);
 router.delete('/:id', deleteProduct);
+<<<<<<< HEAD
 // Update review status
 
 export default router;
+=======
+
+
+export default router;
+
+
+
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a

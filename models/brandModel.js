@@ -14,11 +14,14 @@ const brandSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide image alt text."],
     },
+<<<<<<< HEAD
     status: {
 			type: String,
 			enum: ["active", "inactive"],
 			default: "inactive",
 		},
+=======
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
     slug: String,
   },
   {

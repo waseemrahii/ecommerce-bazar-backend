@@ -104,7 +104,11 @@ export const deleteRefund = async (req, res) => {
         if (!refund) {
             return res.status(404).json({ message: 'Refund not found' });
         }
+<<<<<<< HEAD
         res.status(204).json({message:"deleted"});
+=======
+        res.status(204).json();
+>>>>>>> f84ca444dffd3233b0b3d8ce37fa495e41d1c89a
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
